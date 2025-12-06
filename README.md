@@ -37,6 +37,14 @@ To install an older version than the latest one, you can specify the version by 
 
 ## Usage
 
+### Specific options
+
+* `--webhook=URL`: call a webhook when finished.
+* `--include=PATTERN`: include files matching PATTERN.
+* `--exclude=PATTERN`: exclude files matching PATTERN.
+
+All standard options (e.g. `-r`/`-R`, `-u`, `-f`) are preserved.
+
 ### Change your behaviour
 
 You can install the binaries and use `cpg -g` and `mvg -g` instead of cp and mv:
