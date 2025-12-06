@@ -5,16 +5,24 @@ set -e
 ADVCPMV_VERSION=${1:-0.9}
 CORE_UTILS_VERSION=${2:-9.5}
 
-curl -LO https://ftp.gnu.org/gnu/coreutils/coreutils-$CORE_UTILS_VERSION.tar.xz
-tar xvJf coreutils-$CORE_UTILS_VERSION.tar.xz
-rm coreutils-$CORE_UTILS_VERSION.tar.xz
+DIR_NAME="coreutils-$CORE_UTILS_VERSION"
+PATCH_NAME="advcpmv-$ADVCPMV_VERSION-$CORE_UTILS_VERSION.patch"
+
+if [ ! -d "$DIR_NAME" ]; then
+    echo "Error: Directory '$DIR_NAME' not found."
+    exit 1
+fi
+
+if [ ! -f "$PATCH_NAME" ]; then
+    echo "Error: Patch file '$PATCH_NAME' not found."
+    exit 1
+fi
+
 (
-    cd coreutils-$CORE_UTILS_VERSION/
-    curl -LO https://raw.githubusercontent.com/jarun/advcpmv/master/advcpmv-$ADVCPMV_VERSION-$CORE_UTILS_VERSION.patch
-    patch -p1 -i advcpmv-$ADVCPMV_VERSION-$CORE_UTILS_VERSION.patch
+    cd "$DIR_NAME"
+    patch -p1 -i "../$PATCH_NAME"
     ./configure
     make
     cp ./src/cp ../advcp
     cp ./src/mv ../advmv
 )
-rm -rf coreutils-$CORE_UTILS_VERSION
